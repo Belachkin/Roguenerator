@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class RoomPresenter : MonoBehaviour
 {
@@ -124,14 +125,55 @@ public class RoomPresenter : MonoBehaviour
 
     private void GenerateSegment(KeyValuePair<int, List<RoomsTypes>> segment)
     {
+        Vector2[] directions =
+        {
+            Vector2.down, Vector2.up,
+            Vector2.right, Vector2.left,
+        };
+
         Transform segmentParent = Instantiate(new GameObject()).transform;
         _segmentsParents.Add(segmentParent);
-        
+
+        Vector2 direction = directions[Random.Range(0, directions.Length)];
+        Room mainRoom = null;
+        Door mainDoor = null;
+
         foreach (var item in segment.Value)
         {
             List<Room> tempRooms = _rooms.Where(x => x.RoomType == item).ToList();
+            Room choosenRoom = tempRooms[Random.Range(0, tempRooms.Count)];
+            Room spawnedRoom = Instantiate(choosenRoom);
+            spawnedRoom.transform.parent = segmentParent;
 
+            Door door = spawnedRoom.Exits.First(x => x.direction == direction);
 
+            if (mainRoom == null)
+            {
+                mainRoom = spawnedRoom;
+                mainDoor = door;
+                continue;
+            }
+
+            Door connectedDoor = spawnedRoom.Exits.First(y => y.direction == -direction);
+            
+            Vector3 offset = (Vector3)door.direction * (2 * _roomsSaveZone
+                + ((door.direction.x == 0) ? mainRoom.Height / 2 + spawnedRoom.Height / 2
+                : mainRoom.Width / 2 + spawnedRoom.Width / 2));
+
+            Vector3 diff = door.Transform.localPosition - connectedDoor.Transform.localPosition;
+            offset += (Vector3)new Vector2(Mathf.Abs(diff.x * door.direction.y), Mathf.Abs(diff.y * door.direction.x));
+
+            spawnedRoom.transform.position = mainRoom.transform.position + offset;
+
+            if(segment.Value.IndexOf(item) == segment.Value.Count - 1)
+            {
+                break;
+            }
+
+            ConnectDoors(mainDoor, connectedDoor);
+
+            mainRoom = spawnedRoom;
+            mainDoor = door;
         }
     }
 
@@ -185,16 +227,24 @@ public class RoomPresenter : MonoBehaviour
 
         Room newRoom = Instantiate(choosenRoom, segmentParent);
 
-        Door firstConnectedDoor = newRoom.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction);
+        Door firstConnectedDoor = newRoom.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, -90) * direction);
         firstConnectedDoor.alreadyUsed = true;
         Door secondConnectedDoor = newRoom.Exits.First(x => x.direction == -direction);
         secondConnectedDoor.alreadyUsed = true;
 
-        Door firstMergableDoor = firstRoomToMerge.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction);
-        Door secondMergableDoor = secondRoomToMerge.Exits.First(x => x.direction == direction);
+        Door firstMergableDoor = firstRoomToMerge.Exits.FirstOrDefault(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction && x.alreadyUsed == false);
+        if(firstMergableDoor == null)
+        {
+            firstMergableDoor = firstRoomToMerge.Exits.First(x => x.direction == direction);
+        }
+        Door secondMergableDoor = secondRoomToMerge.Exits.FirstOrDefault(x => x.direction == direction && x.alreadyUsed == false);
+        if (secondMergableDoor == null)
+        {
+            secondMergableDoor = secondRoomToMerge.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction);
+        }
 
         Vector3 offset = (Vector3)firstMergableDoor.direction * (2 * _roomsSaveZone
-                + ((firstMergableDoor.direction.x == 0) ? firstRoomToMerge.Height / 2 + choosenRoom.Height / 2
+                + ((firstMergableDoor.direction.x == 0) ? firstRoomToMerge.Height / 2 + newRoom.Height / 2
                 : firstRoomToMerge.Width / 2 + newRoom.Width / 2));
 
         Vector3 diff = firstMergableDoor.Transform.localPosition - firstConnectedDoor.Transform.localPosition;
@@ -202,8 +252,8 @@ public class RoomPresenter : MonoBehaviour
 
         newRoom.transform.position = firstRoomToMerge.transform.position + offset;
 
-        ConnectDoors(firstConnectedDoor, firstRoomToMerge.Exits.First(x => x.direction == direction));
-        ConnectDoors(secondConnectedDoor, secondRoomToMerge.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, -90) * direction));
+        ConnectDoors(firstConnectedDoor, firstMergableDoor);
+        ConnectDoors(secondConnectedDoor, secondMergableDoor);
     }
 
     private Room GenerateBranch(Room mainRoom, Door mainDoor, List<RoomsTypes> rooms, Vector2 direction, Transform parent)

@@ -49,12 +49,12 @@ MonoBehaviour:
   - BaseNodeGuid: 228a3389-f8ce-419a-8957-05f0983bc194
     PortName: Way
     TargetNodeGuid: db6eff71-81a0-4ec1-8119-25a885d31c3e
-  - BaseNodeGuid: d76997ec-7d9b-42b0-a4f6-f2a4862f8373
-    PortName: Way
-    TargetNodeGuid: b89620a5-256e-4d7d-9f99-2bfac9afd60c
   - BaseNodeGuid: db6eff71-81a0-4ec1-8119-25a885d31c3e
     PortName: Way
     TargetNodeGuid: 73c1bebd-8acb-4216-bcda-e72509805e3f
+  - BaseNodeGuid: d76997ec-7d9b-42b0-a4f6-f2a4862f8373
+    PortName: Way
+    TargetNodeGuid: b89620a5-256e-4d7d-9f99-2bfac9afd60c
   - BaseNodeGuid: 73c1bebd-8acb-4216-bcda-e72509805e3f
     PortName: Way
     TargetNodeGuid: 228a3389-f8ce-419a-8957-05f0983bc194
@@ -89,7 +89,7 @@ MonoBehaviour:
     Position: {x: 1075, y: 321}
   - NodeGUID: 94089b74-658d-4bd4-be7c-e61fde605729
     NodeName: Room Node
-    RoomType: 5
+    RoomType: 3
     Position: {x: 832, y: 332}
   - NodeGUID: 052d96d1-a669-4f3b-a079-43b07bdbac70
     NodeName: Room Node

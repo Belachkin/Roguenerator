@@ -271,7 +271,7 @@ MonoBehaviour:
   - {fileID: -3824196388823096663, guid: 88acb1a724fc4cd449122f71f7d0f50f, type: 3}
   - {fileID: -6076408200914645495, guid: 61f960576e80623409fc4c2d5d091201, type: 3}
   _doorPref: {fileID: 3061811536467945381, guid: 7504a43f6e4c7c3428a6014baf196197, type: 3}
-  _roomsSaveZone: 1
+  _roomsSaveZone: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
