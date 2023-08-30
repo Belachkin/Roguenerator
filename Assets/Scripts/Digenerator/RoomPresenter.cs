@@ -185,9 +185,9 @@ public class RoomPresenter : MonoBehaviour
 
         Room newRoom = Instantiate(choosenRoom, segmentParent);
 
-        Door firstConnectedDoor = newRoom.Exits.First(x => x.direction == -direction);
+        Door firstConnectedDoor = newRoom.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction);
         firstConnectedDoor.alreadyUsed = true;
-        Door secondConnectedDoor = newRoom.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction);
+        Door secondConnectedDoor = newRoom.Exits.First(x => x.direction == -direction);
         secondConnectedDoor.alreadyUsed = true;
 
         Door firstMergableDoor = firstRoomToMerge.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction);
@@ -217,14 +217,14 @@ public class RoomPresenter : MonoBehaviour
             connectedDoor.alreadyUsed = true;
 
             Vector3 offset = (Vector3)mainDoor.direction * (2 * _roomsSaveZone
-                + ((mainDoor.direction.x == 0) ? mainRoom.Height/2 + choosenRoom.Height/2 
-                : mainRoom.Width / 2 + choosenRoom.Width / 2));
+                + ((mainDoor.direction.x == 0) ? mainRoom.Height/2f + choosenRoom.Height/2f
+                : mainRoom.Width / 2f + choosenRoom.Width / 2f));
 
             Vector3 diff = mainDoor.Transform.localPosition - connectedDoor.Transform.localPosition;
-            offset = offset + (Vector3) new Vector2(Mathf.Abs(diff.x * mainDoor.direction.y), Mathf.Abs(diff.y * mainDoor.direction.x));
+            offset = offset + (Vector3) new Vector2(Mathf.Abs( diff.x * mainDoor.direction.y), Mathf.Abs(diff.y * mainDoor.direction.x));
 
+            choosenRoom.transform.position = mainRoom.transform.position + offset;
             mainRoom = choosenRoom;
-            mainRoom.transform.position = mainRoom.transform.position + offset;
 
             ConnectDoors(mainDoor, connectedDoor);
 
