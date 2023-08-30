@@ -44,16 +44,18 @@ public class RoomPresenter : MonoBehaviour
         _baseRoom = _roomsName[0];
         AroundTheGraph(_roomsName[0]);
 
-        foreach(var segment in _segments)
+        SegmentsGeneration();
+    }
+
+    private void SegmentsGeneration()
+    {
+        foreach (var segment in _segments)
         {
             if (_isLoop[segment.Key])
                 GenerateLoopSegment(segment);
             else
                 GenerateSegment(segment);
         }
-
-        Debug.Log(_segments.Keys.Count);
-        
     }
 
     private void AroundTheGraph(string vertexName)
@@ -114,14 +116,9 @@ public class RoomPresenter : MonoBehaviour
 
     private void AddSegment(List<RoomsTypes> roomsTypes,bool isLoop)
     {
-        _segments.Add(index, roomsTypes);
+        _segments.Add(index, roomsTypes.ToList());
         _isLoop.Add(isLoop);
         index++;
-        foreach (var item in roomsTypes)
-        {
-            Debug.Log(item.ToString());
-        }
-        Debug.Log("----------------");
     }
 
     private void GenerateSegment(KeyValuePair<int, List<RoomsTypes>> segment)
@@ -150,8 +147,6 @@ public class RoomPresenter : MonoBehaviour
         Transform segmentParent = Instantiate(new GameObject()).transform;
         _segmentsParents.Add(segmentParent);
 
-        Debug.Log(roomsTypes[0]);
-
         List<Room> tempRooms = _rooms.Where(x => x.RoomType == roomsTypes[0]).ToList();
         Room choosenRoom = tempRooms[Random.Range(0, tempRooms.Count)];
 
@@ -168,7 +163,7 @@ public class RoomPresenter : MonoBehaviour
         GenerateBranch(spawnedRoom, selectedDoor,
             roomsTypes.GetRange(1, centerRoom - 1), _direction, segmentParent);
 
-        selectedDoor = spawnedRoom.Exits.First(x => x.direction == _direction);
+        selectedDoor = spawnedRoom.Exits.FirstOrDefault(x => x.direction == _direction && x.alreadyUsed == false);
         if(selectedDoor == null)
         {
             selectedDoor = spawnedRoom.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * _direction);
@@ -190,6 +185,8 @@ public class RoomPresenter : MonoBehaviour
             Vector3 offset = (Vector3)mainDoor.direction * (2 * _roomsSaveZone
                 + ((mainDoor.direction.x == 0) ? mainRoom.Height/2 + choosenRoom.Height/2 
                 : mainRoom.Width / 2 + choosenRoom.Width / 2));
+
+            offset += new Vector3();
 
             mainRoom = Instantiate(choosenRoom, mainRoom.transform.position
                 + offset, Quaternion.identity);
