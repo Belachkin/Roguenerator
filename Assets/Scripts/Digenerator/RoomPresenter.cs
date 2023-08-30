@@ -25,6 +25,7 @@ public class RoomPresenter : MonoBehaviour
     //Генерация сегментов
     [Header("Rooms")]
     [SerializeField] private List<Room> _rooms = new List<Room>();
+    [SerializeField] private GameObject _doorPref;
     [SerializeField] private float _roomsSaveZone = 1f;
     private List<Transform> _segmentsParents = new List<Transform>();
 
@@ -153,55 +154,89 @@ public class RoomPresenter : MonoBehaviour
         Room spawnedRoom = Instantiate(choosenRoom);
         spawnedRoom.transform.parent = segmentParent;
 
-        Vector2 _direction = directions[Random.Range(0, directions.Length)];
+        Vector2 direction = directions[Random.Range(0, directions.Length)];
 
         int centerRoom = Mathf.RoundToInt(roomsTypes.Count / 2f);
 
-        Door selectedDoor = spawnedRoom.Exits.First(x => x.direction == _direction);
+        Door selectedDoor = spawnedRoom.Exits.First(x => x.direction == direction);
         selectedDoor.alreadyUsed = true;
 
-        GenerateBranch(spawnedRoom, selectedDoor,
-            roomsTypes.GetRange(1, centerRoom - 1), _direction, segmentParent);
+        Room firstRoomToMerge = GenerateBranch(spawnedRoom, selectedDoor,
+            roomsTypes.GetRange(1, centerRoom - 1), direction, segmentParent);
 
-        selectedDoor = spawnedRoom.Exits.FirstOrDefault(x => x.direction == _direction && x.alreadyUsed == false);
+        selectedDoor = spawnedRoom.Exits.FirstOrDefault(x => x.direction == direction && x.alreadyUsed == false);
         if(selectedDoor == null)
         {
-            selectedDoor = spawnedRoom.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * _direction);
+            selectedDoor = spawnedRoom.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction);
         }
         selectedDoor.alreadyUsed = true;
 
-        GenerateBranch(spawnedRoom, selectedDoor,
+        Room secondRoomToMerge = GenerateBranch(spawnedRoom, selectedDoor,
             roomsTypes.GetRange(centerRoom + 1, roomsTypes.Count - centerRoom - 1),
-            _direction, segmentParent);
+            direction, segmentParent);
+
+        MergeRooms(firstRoomToMerge, secondRoomToMerge, roomsTypes[centerRoom], direction, segmentParent);
     }
 
-    private void GenerateBranch(Room mainRoom, Door mainDoor, List<RoomsTypes> rooms, Vector2 direction, Transform parent)
+    private void MergeRooms(Room firstRoomToMerge, Room secondRoomToMerge, RoomsTypes centerRoom, Vector2 direction, Transform segmentParent)
+    {
+        List<Room> tempRooms = _rooms.Where(x => x.RoomType == centerRoom).ToList();
+        Room choosenRoom = tempRooms[Random.Range(0, tempRooms.Count)];
+
+        Door firstConnectedDoor = choosenRoom.Exits.First(x => x.direction == -direction);
+        firstConnectedDoor.alreadyUsed = true;
+        Door secondConnectedDoor = choosenRoom.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction);
+        secondConnectedDoor.alreadyUsed = true;
+
+        Door firstMergableDoor = firstRoomToMerge.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, 90) * direction);
+        Door secondMergableDoor = secondRoomToMerge.Exits.First(x => x.direction == direction);
+
+        Vector3 offset = (Vector3)firstMergableDoor.direction * (2 * _roomsSaveZone
+                + ((firstMergableDoor.direction.x == 0) ? firstRoomToMerge.Height / 2 + choosenRoom.Height / 2
+                : firstRoomToMerge.Width / 2 + choosenRoom.Width / 2));
+
+        Vector3 diff = firstMergableDoor.Transform.localPosition - firstConnectedDoor.Transform.localPosition;
+        offset += (Vector3)new Vector2(Mathf.Abs(diff.x * firstMergableDoor.direction.y), Mathf.Abs(diff.y * firstMergableDoor.direction.x));
+
+        Room newRoom = Instantiate(choosenRoom, firstRoomToMerge.transform.position
+            + offset, Quaternion.identity);
+        newRoom.transform.parent = segmentParent;
+
+        ConnectDoors(firstConnectedDoor, firstRoomToMerge.Exits.First(x => x.direction == direction));
+        ConnectDoors(secondConnectedDoor, secondRoomToMerge.Exits.First(x => (Vector3)x.direction == Quaternion.Euler(0, 0, -90) * direction));
+    }
+
+    private Room GenerateBranch(Room mainRoom, Door mainDoor, List<RoomsTypes> rooms, Vector2 direction, Transform parent)
     {
         foreach (RoomsTypes room in rooms)
         {
             List<Room> tempRooms = _rooms.Where(x => x.RoomType == room).ToList();
             Room choosenRoom = tempRooms[Random.Range(0, tempRooms.Count)];
 
+            Door connectedDoor = choosenRoom.Exits.First(x => x.direction == -mainDoor.direction);
+            connectedDoor.alreadyUsed = true;
+
             Vector3 offset = (Vector3)mainDoor.direction * (2 * _roomsSaveZone
                 + ((mainDoor.direction.x == 0) ? mainRoom.Height/2 + choosenRoom.Height/2 
                 : mainRoom.Width / 2 + choosenRoom.Width / 2));
 
-            offset += new Vector3();
+            Vector3 diff = mainDoor.Transform.localPosition - connectedDoor.Transform.localPosition;
+            offset = offset + (Vector3) new Vector2(Mathf.Abs(diff.x * mainDoor.direction.y), Mathf.Abs(diff.y * mainDoor.direction.x));
 
             mainRoom = Instantiate(choosenRoom, mainRoom.transform.position
                 + offset, Quaternion.identity);
             mainRoom.transform.parent = parent;
 
-            Door connectedDoor = choosenRoom.Exits.First(x => x.direction == -mainDoor.direction);
-            connectedDoor.alreadyUsed = true;
             ConnectDoors(mainDoor, connectedDoor);
 
             mainDoor = mainRoom.Exits.First(x => x.direction == direction);
         }
+        return mainRoom;
     }
 
     private void ConnectDoors(Door mainDoor, Door connectedDoor)
     {
-        
+        Instantiate(_doorPref, mainDoor.Transform);
+        Instantiate(_doorPref, connectedDoor.Transform);
     }
 }

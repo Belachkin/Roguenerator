@@ -13,77 +13,105 @@ MonoBehaviour:
   m_Name: Dungeon
   m_EditorClassIdentifier: 
   NodeLinks:
-  - BaseNodeGuid: 7243f2d0-0a50-4300-92fa-7c029101d7f8
+  - BaseNodeGuid: 8b5fd2f9-33e5-4464-aff7-5e82bbaa11df
+    PortName: Way
+    TargetNodeGuid: c0ed0d24-04da-446b-83e9-0c74c710986f
+  - BaseNodeGuid: c0ed0d24-04da-446b-83e9-0c74c710986f
+    PortName: Way
+    TargetNodeGuid: bede2f93-8bed-4d63-866b-d5b9d3c85577
+  - BaseNodeGuid: bede2f93-8bed-4d63-866b-d5b9d3c85577
+    PortName: Way
+    TargetNodeGuid: 689a23fb-dce1-4aad-bc8c-cf7f454ab82d
+  - BaseNodeGuid: 689a23fb-dce1-4aad-bc8c-cf7f454ab82d
+    PortName: Way
+    TargetNodeGuid: ddd2591b-7f82-4cf7-b4e6-99adf2f91b8a
+  - BaseNodeGuid: 689a23fb-dce1-4aad-bc8c-cf7f454ab82d
+    PortName: Way
+    TargetNodeGuid: 052d96d1-a669-4f3b-a079-43b07bdbac70
+  - BaseNodeGuid: ccb903b6-2f79-4440-918a-960f85e61093
     PortName: Next
-    TargetNodeGuid: 4124beb9-1b51-4310-8cf6-4b70ba09cdec
-  - BaseNodeGuid: 4124beb9-1b51-4310-8cf6-4b70ba09cdec
+    TargetNodeGuid: 8b5fd2f9-33e5-4464-aff7-5e82bbaa11df
+  - BaseNodeGuid: 81dc49f5-92ce-43b8-bc35-a0f66383b637
     PortName: Way
-    TargetNodeGuid: 671ae82e-b3f9-4a01-ba85-23e8efdf07cb
-  - BaseNodeGuid: 4124beb9-1b51-4310-8cf6-4b70ba09cdec
+    TargetNodeGuid: ccb903b6-2f79-4440-918a-960f85e61093
+  - BaseNodeGuid: ddd2591b-7f82-4cf7-b4e6-99adf2f91b8a
     PortName: Way
-    TargetNodeGuid: 2e3515ab-79ae-48f9-b4ea-8344c21468f2
-  - BaseNodeGuid: cb21ab8f-0e45-400c-9275-935fd66fbc31
+    TargetNodeGuid: 94089b74-658d-4bd4-be7c-e61fde605729
+  - BaseNodeGuid: 94089b74-658d-4bd4-be7c-e61fde605729
     PortName: Way
-    TargetNodeGuid: 7243f2d0-0a50-4300-92fa-7c029101d7f8
-  - BaseNodeGuid: 671ae82e-b3f9-4a01-ba85-23e8efdf07cb
+    TargetNodeGuid: 81dc49f5-92ce-43b8-bc35-a0f66383b637
+  - BaseNodeGuid: 052d96d1-a669-4f3b-a079-43b07bdbac70
     PortName: Way
-    TargetNodeGuid: cb21ab8f-0e45-400c-9275-935fd66fbc31
-  - BaseNodeGuid: 2e3515ab-79ae-48f9-b4ea-8344c21468f2
+    TargetNodeGuid: d76997ec-7d9b-42b0-a4f6-f2a4862f8373
+  - BaseNodeGuid: 052d96d1-a669-4f3b-a079-43b07bdbac70
     PortName: Way
-    TargetNodeGuid: 696c9526-d6be-4b55-a9b7-026d8b50e5b5
-  - BaseNodeGuid: 2e3515ab-79ae-48f9-b4ea-8344c21468f2
+    TargetNodeGuid: 228a3389-f8ce-419a-8957-05f0983bc194
+  - BaseNodeGuid: 228a3389-f8ce-419a-8957-05f0983bc194
     PortName: Way
-    TargetNodeGuid: 099e2b06-61b9-45aa-8222-ae06b893351f
-  - BaseNodeGuid: 696c9526-d6be-4b55-a9b7-026d8b50e5b5
+    TargetNodeGuid: db6eff71-81a0-4ec1-8119-25a885d31c3e
+  - BaseNodeGuid: d76997ec-7d9b-42b0-a4f6-f2a4862f8373
     PortName: Way
-    TargetNodeGuid: b28cc0d5-8b8c-4aa5-b121-1283ba979e6a
-  - BaseNodeGuid: 099e2b06-61b9-45aa-8222-ae06b893351f
+    TargetNodeGuid: b89620a5-256e-4d7d-9f99-2bfac9afd60c
+  - BaseNodeGuid: db6eff71-81a0-4ec1-8119-25a885d31c3e
     PortName: Way
-    TargetNodeGuid: e04b853c-90e6-4161-9471-d69dd3ca53d2
-  - BaseNodeGuid: e04b853c-90e6-4161-9471-d69dd3ca53d2
+    TargetNodeGuid: 73c1bebd-8acb-4216-bcda-e72509805e3f
+  - BaseNodeGuid: 73c1bebd-8acb-4216-bcda-e72509805e3f
     PortName: Way
-    TargetNodeGuid: 613e077a-b294-4e6e-964f-62bfac87a9cf
-  - BaseNodeGuid: 613e077a-b294-4e6e-964f-62bfac87a9cf
-    PortName: Way
-    TargetNodeGuid: 099e2b06-61b9-45aa-8222-ae06b893351f
+    TargetNodeGuid: 228a3389-f8ce-419a-8957-05f0983bc194
   RoomsNodeData:
-  - NodeGUID: cb21ab8f-0e45-400c-9275-935fd66fbc31
-    NodeName: Room Node
-    RoomType: 3
-    Position: {x: 38, y: 332}
-  - NodeGUID: 2e3515ab-79ae-48f9-b4ea-8344c21468f2
-    NodeName: Room Node
-    RoomType: 4
-    Position: {x: 715, y: 139}
-  - NodeGUID: 696c9526-d6be-4b55-a9b7-026d8b50e5b5
-    NodeName: Room Node
-    RoomType: 5
-    Position: {x: 729, y: 314}
-  - NodeGUID: b28cc0d5-8b8c-4aa5-b121-1283ba979e6a
-    NodeName: Room Node
-    RoomType: 6
-    Position: {x: 729, y: 512}
-  - NodeGUID: 099e2b06-61b9-45aa-8222-ae06b893351f
-    NodeName: Room Node
-    RoomType: 2
-    Position: {x: 988, y: 139}
-  - NodeGUID: e04b853c-90e6-4161-9471-d69dd3ca53d2
+  - NodeGUID: 8b5fd2f9-33e5-4464-aff7-5e82bbaa11df
     NodeName: Room Node
     RoomType: 7
-    Position: {x: 1289, y: 139}
-  - NodeGUID: 613e077a-b294-4e6e-964f-62bfac87a9cf
+    Position: {x: 569, y: 135}
+  - NodeGUID: c0ed0d24-04da-446b-83e9-0c74c710986f
+    NodeName: Room Node
+    RoomType: 6
+    Position: {x: 841, y: 135}
+  - NodeGUID: bede2f93-8bed-4d63-866b-d5b9d3c85577
+    NodeName: Room Node
+    RoomType: 4
+    Position: {x: 1075, y: 135}
+  - NodeGUID: 689a23fb-dce1-4aad-bc8c-cf7f454ab82d
     NodeName: Room Node
     RoomType: 3
-    Position: {x: 1101, y: -115}
-  - NodeGUID: 7243f2d0-0a50-4300-92fa-7c029101d7f8
+    Position: {x: 1312, y: 200}
+  - NodeGUID: ccb903b6-2f79-4440-918a-960f85e61093
     NodeName: Start
+    RoomType: 0
+    Position: {x: 329, y: 200}
+  - NodeGUID: 81dc49f5-92ce-43b8-bc35-a0f66383b637
+    NodeName: Room Node
     RoomType: 4
-    Position: {x: -135, y: 109}
-  - NodeGUID: 4124beb9-1b51-4310-8cf6-4b70ba09cdec
+    Position: {x: 624, y: 297}
+  - NodeGUID: ddd2591b-7f82-4cf7-b4e6-99adf2f91b8a
+    NodeName: Room Node
+    RoomType: 7
+    Position: {x: 1075, y: 321}
+  - NodeGUID: 94089b74-658d-4bd4-be7c-e61fde605729
+    NodeName: Room Node
+    RoomType: 5
+    Position: {x: 832, y: 332}
+  - NodeGUID: 052d96d1-a669-4f3b-a079-43b07bdbac70
+    NodeName: Room Node
+    RoomType: 3
+    Position: {x: 1552, y: 200}
+  - NodeGUID: 228a3389-f8ce-419a-8957-05f0983bc194
     NodeName: Room Node
     RoomType: 1
-    Position: {x: 438, y: 139}
-  - NodeGUID: 671ae82e-b3f9-4a01-ba85-23e8efdf07cb
+    Position: {x: 1859, y: 321}
+  - NodeGUID: db6eff71-81a0-4ec1-8119-25a885d31c3e
     NodeName: Room Node
-    RoomType: 2
-    Position: {x: 287, y: 314}
+    RoomType: 1
+    Position: {x: 2125, y: 331}
+  - NodeGUID: d76997ec-7d9b-42b0-a4f6-f2a4862f8373
+    NodeName: Room Node
+    RoomType: 1
+    Position: {x: 1595, y: 428}
+  - NodeGUID: b89620a5-256e-4d7d-9f99-2bfac9afd60c
+    NodeName: Room Node
+    RoomType: 1
+    Position: {x: 1565, y: 653}
+  - NodeGUID: 73c1bebd-8acb-4216-bcda-e72509805e3f
+    NodeName: Room Node
+    RoomType: 1
+    Position: {x: 2013, y: 152}
